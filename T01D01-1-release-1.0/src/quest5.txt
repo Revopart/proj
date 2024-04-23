@@ -1,0 +1,5 @@
+1. nano src/door_management_files/door_configuration/door_1.conf
+2. replace CLOSE to OPEN
+3. ctrl+x
+4. y
+5. enter
