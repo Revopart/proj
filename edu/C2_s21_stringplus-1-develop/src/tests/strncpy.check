@@ -1,0 +1,21 @@
+
+
+#suite s21_strncpy
+char dest_std[100];
+char dest_s21[100];
+
+#test s21_strncpy_normal_behavior_case_1
+char src[] = "Hello world";
+ck_assert_str_eq(strncpy(dest_std, src, 5), s21_strncpy(dest_s21, src, 5));
+
+#test s21_strncpy_normal_behavior_case_2
+char src[] = "hll wrld";
+ck_assert_str_eq(strncpy(dest_std, src, 5), s21_strncpy(dest_s21, src, 5));
+
+#test s21_strncpy_empty_string
+char src[] = "";
+ck_assert_str_eq(strncpy(dest_std, src, 3), s21_strncpy(dest_s21, src, 3));
+
+#test s21_strncpy_string_with_null_character
+char src[] = "Some text\0 Another text after null";
+ck_assert_str_eq(strncpy(dest_std, src, 50), s21_strncpy(dest_s21, src, 50));

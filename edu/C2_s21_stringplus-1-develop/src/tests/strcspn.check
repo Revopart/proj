@@ -1,0 +1,76 @@
+# suite s21_strcspn_suite
+
+# tcase Basic_Operations_strcspn
+# test strcspn_no_match
+char main_str1[] = "Hello, World!";
+char reject1[] = "xyz";
+size_t expected1 = strcspn(main_str1, reject1);
+size_t result1 = s21_strcspn(main_str1, reject1);
+ck_assert_msg(result1 == expected1, "\033[31mstrcspn_no_match failed: result %zu, expected %zu\033[0m", result1, expected1);
+
+# test strcspn_first_match
+char main_str2[] = "Hello, World!";
+char reject2[] = "H";
+size_t expected2 = strcspn(main_str2, reject2);
+size_t result2 = s21_strcspn(main_str2, reject2);
+ck_assert_msg(result2 == expected2, "\033[31mstrcspn_first_match failed: result %zu, expected %zu\033[0m", result2, expected2);
+
+# test strcspn_match_at_end
+char main_str3[] = "Hello, World!";
+char reject3[] = "!";
+size_t expected3 = strcspn(main_str3, reject3);
+size_t result3 = s21_strcspn(main_str3, reject3);
+ck_assert_msg(result3 == expected3, "\033[31mstrcspn_match_at_end failed: result %zu, expected %zu\033[0m", result3, expected3);
+
+# test strcspn_multiple_matches
+char main_str4[] = "Hello, World!";
+char reject4[] = "oe";
+size_t expected4 = strcspn(main_str4, reject4);
+size_t result4 = s21_strcspn(main_str4, reject4);
+ck_assert_msg(result4 == expected4, "\033[31mstrcspn_multiple_matches failed: result %zu, expected %zu\033[0m", result4, expected4);
+
+# test strcspn_no_reject_chars
+char main_str5[] = "Hello, World!";
+char reject5[] = "";
+size_t expected5 = strcspn(main_str5, reject5);
+size_t result5 = s21_strcspn(main_str5, reject5);
+ck_assert_msg(result5 == expected5, "\033[31mstrcspn_no_reject_chars failed: result %zu, expected %zu\033[0m", result5, expected5);
+
+# tcase Special_Cases_strcspn
+# test strcspn_empty_main_string
+char main_str6[] = "";
+char reject6[] = "abc";
+size_t expected6 = strcspn(main_str6, reject6);
+size_t result6 = s21_strcspn(main_str6, reject6);
+ck_assert_msg(result6 == expected6, "\033[31mstrcspn_empty_main_string failed: result %zu, expected %zu\033[0m", result6, expected6);
+
+# test strcspn_special_characters
+char main_str7[] = "Hello, @World!";
+char reject7[] = "@#";
+size_t expected7 = strcspn(main_str7, reject7);
+size_t result7 = s21_strcspn(main_str7, reject7);
+ck_assert_msg(result7 == expected7, "\033[31mstrcspn_special_characters failed: result %zu, expected %zu\033[0m", result7, expected7);
+
+# test strcspn_unicode_chars
+char main_str8[] = "Привет, мир!";
+char reject8[] = "ир!";
+size_t expected8 = strcspn(main_str8, reject8);
+size_t result8 = s21_strcspn(main_str8, reject8);
+ck_assert_msg(result8 == expected8, "\033[31mstrcspn_unicode_chars failed: result %zu, expected %zu\033[0m", result8, expected8);
+
+# test strcspn_all_matching
+char main_str9[] = "aaaaaa";
+char reject9[] = "a";
+size_t expected9 = strcspn(main_str9, reject9);
+size_t result9 = s21_strcspn(main_str9, reject9);
+ck_assert_msg(result9 == expected9, "\033[31mstrcspn_all_matching failed: result %zu, expected %zu\033[0m", result9, expected9);
+
+# test strcspn_long_string
+char main_str10[1000];
+memset(main_str10, 'a', 999);
+main_str10[999] = '\0';
+char reject10[] = "z";
+size_t expected10 = strcspn(main_str10, reject10);
+size_t result10 = s21_strcspn(main_str10, reject10);
+ck_assert_msg(result10 == expected10, "\033[31mstrcspn_long_string failed: result %zu, expected %zu\033[0m", result10, expected10);
+

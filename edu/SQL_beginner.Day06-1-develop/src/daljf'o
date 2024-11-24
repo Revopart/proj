@@ -1,0 +1,8 @@
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_person_discounts_unique on person_discounts  (cost=0.14..8.15 rows=1 width=56) (actual time=0.060..0.063 rows=2 loops=1)
+   Index Cond: (person_id = 4)
+ Planning Time: 0.445 ms
+ Execution Time: 0.090 ms
+(4 rows)
+

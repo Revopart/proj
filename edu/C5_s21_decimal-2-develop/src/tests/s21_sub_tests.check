@@ -1,0 +1,75 @@
+# suite s21_sub_test_suite
+
+# tcase Subtraction_Basic_Functionality
+
+# test sub_positive_numbers
+s21_decimal value_1 = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (bits[0] = 123, scale = 2)
+s21_decimal value_2 = {{0b00000000000000000000000000101100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 0.44 (bits[0] = 44, scale = 2)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001001111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}}; // 0.79 (bits[0] = 79, scale = 2)
+int exit_code = s21_sub(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31msub_positive_numbers failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31msub_positive_numbers failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+//# test sub_negative_numbers
+//s21_decimal value_1 = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -1.23 (bits[0] = 123, scale = 2, sign = 1)
+//s21_decimal value_2 = {{0b00000000000000000000000000101100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -0.44 (bits[0] = 44, scale = 2, sign = 1)
+//s21_decimal result;
+//s21_decimal expected = {{0b00000000000000000000000001001111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}}; // -0.79 (bits[0] = 79, scale = 2, sign = 1)
+//int exit_code = s21_sub(value_1, value_2, &result);
+//ck_assert_msg(exit_code == 0, "\033[31msub_negative_numbers failed: exit_code %d, expected 0\033[0m", exit_code);
+//ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+//"\033[31msub_negative_numbers failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+//result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+//expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+//# test sub_positive_and_negative_numbers
+//s21_decimal value_1 = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (bits[0] = 123, scale = 2)
+//s21_decimal value_2 = {{0b00000000000000000000000000101100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // -0.44 (bits[0] = 44, scale = 2, sign = 1)
+//s21_decimal result;
+//s21_decimal expected = {{0b00000000000000000000000010100111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}}; // 1.67 (bits[0] = 167, scale = 2)
+//int exit_code = s21_sub(value_1, value_2, &result);
+//ck_assert_msg(exit_code == 0, "\033[31msub_positive_and_negative_numbers failed: exit_code %d, expected 0\033[0m", exit_code);
+//ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+//"\033[31msub_positive_and_negative_numbers failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+//result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+//expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test sub_large_numbers
+s21_decimal value_1 = {{0b11111111111111111111111111111111, 0b11111111111111111111111111111111, 0b11111111111111111111111111111111, 0b00000000000000000000000000000000}};  // Большое число (максимальные значения bits[0], bits[1], bits[2])
+s21_decimal value_2 = {{0b11111111111111111111111111111110, 0b11111111111111111111111111111111, 0b11111111111111111111111111111111, 0b00000000000000000000000000000000}};  // Большое число, но на 1 меньше
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 1
+int exit_code = s21_sub(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31msub_large_numbers failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31msub_large_numbers failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test sub_result_zero
+s21_decimal value_1 = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (bits[0] = 123, scale = 2)
+s21_decimal value_2 = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (bits[0] = 123, scale = 2)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+int exit_code = s21_sub(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31msub_result_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31msub_result_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test sub_with_carry
+s21_decimal value_1 = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000001, 0b00000000000000000000000000000001, 0b00000000000000000000000000000000}};  // Число с значениями в bits[0], bits[1], bits[2]
+s21_decimal value_2 = {{0b00000000000000000000000000000010, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // Число, большее на 1 в bits[0]
+s21_decimal result;
+s21_decimal expected = {{0b11111111111111111111111111111111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000001, 0b00000000000000000000000000000000}}; // Результат с заимствованием
+int exit_code = s21_sub(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31msub_with_carry failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31msub_with_carry failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);

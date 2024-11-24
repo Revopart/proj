@@ -1,0 +1,74 @@
+# suite s21_truncate_test_suite
+
+# tcase Truncate_Basic_Functionality
+
+# test truncate_positive
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (scale = 2)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 1
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_positive failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_negative
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -1.23 (scale = 2, sign = 1)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}}; // -1
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_integer_positive
+s21_decimal value = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 4 (integer)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 4
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_integer_positive failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_integer_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_integer_negative
+s21_decimal value = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}};  // -4 (integer, sign = 1)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}}; // -4
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_integer_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_integer_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033{{0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_zero
+s21_decimal value = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_large_scale
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // 1.23e-28 (scale = 28)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+int exit_code = s21_truncate(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mtruncate_large_scale failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mtruncate_large_scale failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test truncate_null_pointer
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (scale = 2)
+int exit_code = s21_truncate(value, NULL);
+ck_assert_msg(exit_code == 1, "\033[31mtruncate_null_pointer failed: exit_code %d, expected 1\033[0m", exit_code);

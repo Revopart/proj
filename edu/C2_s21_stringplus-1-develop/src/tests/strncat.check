@@ -1,0 +1,83 @@
+# suite s21_strncat_suite
+
+# tcase Basic_Concatenation_strncat
+# test strncat_basic
+char src[] = " World!";
+char dest[50] = "Hello,";
+char expected[50] = "Hello,";
+strncat(expected, src, strlen(src) + 1);
+s21_strncat(dest, src, strlen(src) + 1);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_basic failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_zero_length
+char src[] = "Hello";
+char dest[50] = "World";
+char expected[50] = "World";
+strncat(expected, src, 0);
+s21_strncat(dest, src, 0);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_zero_length failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_partial_concat
+char src[] = " to the world";
+char dest[50] = "Hello";
+char expected[50] = "Hello";
+strncat(expected, src, 5); // Only concatenate " to t"
+s21_strncat(dest, src, 5);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_partial_concat failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_with_empty_src
+char src[] = "";
+char dest[50] = "Empty source";
+char expected[50] = "Empty source";
+strncat(expected, src, strlen(src));
+s21_strncat(dest, src, strlen(src));
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_with_empty_src failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_to_empty_dest
+char src[] = "Non-empty source";
+char dest[50] = "";
+char expected[50] = "";
+strncat(expected, src, strlen(src));
+s21_strncat(dest, src, strlen(src));
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_to_empty_dest failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# tcase Edge_Cases_strncat
+# test strncat_full_concat
+char src[] = " and full concat";
+char dest[50] = "Hello";
+char expected[50] = "Hello";
+strncat(expected, src, strlen(src));
+s21_strncat(dest, src, strlen(src));
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_full_concat failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_exceeding_size
+char src[] = " with exceeding size";
+char dest[50] = "Hello";
+char expected[50] = "Hello";
+strncat(expected, src, 50);
+s21_strncat(dest, src, 50);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_exceeding_size failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_non_english
+char src[] = " мир!";
+char dest[50] = "Привет,";
+char expected[50] = "Привет,";
+strncat(expected, src, strlen(src) + 1);
+s21_strncat(dest, src, strlen(src) + 1);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_non_english failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_repeating_chars
+char src[50] = "aaaaa";
+char dest[50] = "bbbbb";
+char expected[50] = "bbbbb";
+strncat(expected, src, 5);
+s21_strncat(dest, src, 5);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_repeating_chars failed: dest '%s', expected '%s'\033[0m", dest, expected);
+
+# test strncat_boundary_test
+char src[] = " boundary";
+char dest[50] = "Testing";
+char expected[50] = "Testing";
+strncat(expected, src, 1); // Should only add ' '
+s21_strncat(dest, src, 1);
+ck_assert_msg(strcmp(dest, expected) == 0, "\033[31mstrncat_boundary_test failed: dest '%s', expected '%s'\033[0m", dest, expected);

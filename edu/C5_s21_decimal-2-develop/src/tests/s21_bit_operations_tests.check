@@ -1,0 +1,98 @@
+# suite s21_get_bit_test_suite
+
+# tcase Get_Bit_Basic_Functionality
+
+# test get_bit_0
+unsigned int number = 0b00000000000000000000000000000001;  // 1
+int id = 0;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= 1;
+ck_assert_msg(result == expected, "\033[31mget_bit_0 failed: result %d, expected %d\033[0m", result, expected);
+
+# test get_bit_31
+unsigned int number = 0b10000000000000000000000000000000;  // 2^31
+int id = 31;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= 1;
+ck_assert_msg(result == expected, "\033[31mget_bit_31 failed: result %d, expected %d\033[0m", result, expected);
+
+# test get_bit_15
+unsigned int number = 0b00000000000000001000000000000000;  // 2^15
+int id = 15;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= 1;
+ck_assert_msg(result == expected, "\033[31mget_bit_15 failed: result %d, expected %d\033[0m", result, expected);
+
+# test get_bit_0_zero
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 0;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= 0;
+ck_assert_msg(result == expected, "\033[31mget_bit_0_zero failed: result %d, expected %d\033[0m", result, expected);
+
+# test get_bit_31_zero
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 31;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= 0;
+ck_assert_msg(result == expected, "\033[31mget_bit_31_zero failed: result %d, expected %d\033[0m", result, expected);
+
+# test get_bit_invalid_id
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 32;
+unsigned int result = s21_get_bit(number, id);
+unsigned int expected= -1;
+ck_assert_msg(result == expected, "\033[31mget_bit_invalid_id failed: result %d, expected %d\033[0m", result, expected);
+
+
+# suite s21_set_bit_test_suite
+
+# tcase Set_Bit_Basic_Functionality
+
+# test set_bit_0_to_1
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 0;
+int bit = 1;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= 0b00000000000000000000000000000001;  // 1
+ck_assert_msg(result == expected, "\033[31mset_bit_0_to_1 failed: result %u, expected %u\033[0m", result, expected);
+
+# test set_bit_31_to_1
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 31;
+int bit = 1;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= 0b10000000000000000000000000000000;  // 2^31
+ck_assert_msg(result == expected, "\033[31mset_bit_31_to_1 failed: result %u, expected %u\033[0m", result, expected);
+
+# test set_bit_0_to_0
+unsigned int number = 0b00000000000000000000000000000001;  // 1
+int id = 0;
+int bit = 0;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= 0b00000000000000000000000000000000;  // 0
+ck_assert_msg(result == expected, "\033[31mset_bit_0_to_0 failed: result %u, expected %u\033[0m", result, expected);
+
+# test set_bit_31_to_0
+unsigned int number = 0b10000000000000000000000000000000;  // 2^31
+int id = 31;
+int bit = 0;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= 0b00000000000000000000000000000000;  // 0
+ck_assert_msg(result == expected, "\033[31mset_bit_31_to_0 failed: result %u, expected %u\033[0m", result, expected);
+
+# test set_bit_invalid_id
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 32;
+int bit = 1;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= -1;
+ck_assert_msg(result == expected, "\033[31mset_bit_invalid_id failed: result %d, expected %d\033[0m", result, expected);
+
+# test set_bit_invalid_bit
+unsigned int number = 0b00000000000000000000000000000000;  // 0
+int id = 0;
+int bit = 2;
+unsigned int result = s21_set_bit(number, id, bit);
+unsigned int expected= -1;
+ck_assert_msg(result == expected, "\033[31mset_bit_invalid_bit failed: result %d, expected %d\033[0m", result, expected);

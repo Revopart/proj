@@ -1,0 +1,47 @@
+
+# suite s21_trim_suite
+
+# tcase Basic_Functionality_trim
+# test trim_basic
+const char src[] = "   Hello, World!   ";
+const char trim_chars[] = " ";
+const char expected[] = "Hello,World!";
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mtrim_basic failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test trim_null_src
+const char *src = NULL;
+const char trim_chars[] = " ";
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(result == NULL, "\033[31mtrim_null_src failed: result %p, expected NULL\033[0m", result);
+
+# test trim_null_trim_chars
+const char src[] = "   Hello, World!   ";
+const char *trim_chars = NULL;
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(result == NULL, "\033[31mtrim_null_trim_chars failed: result %p, expected NULL\033[0m", result);
+
+# test trim_empty_src
+const char src[] = "";
+const char trim_chars[] = " ";
+const char expected[] = "";
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mtrim_empty_src failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test trim_no_trim_chars
+const char src[] = "   Hello, World!   ";
+const char trim_chars[] = "";
+const char expected[] = "   Hello, World!   ";
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mtrim_no_trim_chars failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test trim_all_trim_chars
+const char src[] = "   Hello, World!   ";
+const char trim_chars[] = " !,";
+const char expected[] = "HelloWorld";
+void *result = s21_trim(src, trim_chars);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mtrim_all_trim_chars failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);

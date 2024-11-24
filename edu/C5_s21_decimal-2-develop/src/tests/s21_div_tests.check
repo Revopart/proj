@@ -1,0 +1,151 @@
+# suite s21_div_test_suite
+
+# tcase Division_Basic_Functionality
+
+# test div_max_by_max
+s21_decimal val1 = {{0xffffffff, 0xffffffff, 0xffffffff, 0}};
+s21_decimal val2 = {{0xffffffff, 0xffffffff, 0xffffffff, 0}};
+s21_decimal result;
+s21_decimal expected = {{1, 0, 0, 0}};
+int exit_code = s21_div(val1, val2, &result);
+ck_assert_msg(exit_code == 0, "\033[31mdiv_max_by_max failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_max_by_max failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_one_by_zero
+s21_decimal val1 = {{1, 0, 0, 0}};
+s21_decimal val2 = {{0, 0, 0, 0}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// Division by zero
+ck_assert_msg(exit_code == 3, "\033[31mdiv_one_by_zero failed: exit_code %d, expected 3\033[0m", exit_code);
+
+# test div_fractional_result
+s21_decimal val1 = {{15000, 0, 0, (3 << 16)}};
+s21_decimal val2 = {{8, 0, 0, 0}};
+s21_decimal result;
+s21_decimal expected = {{1875, 0, 0, (3 << 16)}};
+int exit_code = s21_div(val1, val2, &result);
+// 15 / 8 = 1.875 (scale = 3)
+ck_assert_msg(exit_code == 0, "\033[31mdiv_fractional_result failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_fractional_result failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_negative_fractional_result
+s21_decimal val1 = {{15000, 0, 0, (1U << 31) | (3U << 16)}};
+s21_decimal val2 = {{8, 0, 0, 0}};
+s21_decimal result;
+s21_decimal expected = {{1875, 0, 0, (1U << 31) | (3U << 16)}};
+int exit_code = s21_div(val1, val2, &result);
+// -15 / 8 = -1.875 (scale = 3)
+ck_assert_msg(exit_code == 0, "\033[31mdiv_negative_fractional_result failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_negative_fractional_result failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_positive_by_negative
+s21_decimal val1 = {{15000, 0, 0, (3U << 16)}};
+s21_decimal val2 = {{8, 0, 0, (1U << 31)}};
+s21_decimal result;
+s21_decimal expected = {{1875, 0, 0, (1U << 31) | (3U << 16)}};
+int exit_code = s21_div(val1, val2, &result);
+// 15 / -8 = -1.875 (scale = 3)
+ck_assert_msg(exit_code == 0, "\033[31mdiv_positive_by_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_positive_by_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_negative_by_negative
+s21_decimal val1 = {{15000, 0, 0, (1U << 31) | (3U << 16)}};
+s21_decimal val2 = {{8, 0, 0, (1U << 31)}};
+s21_decimal result;
+s21_decimal expected = {{1875, 0, 0, (3U << 16)}};
+int exit_code = s21_div(val1, val2, &result);
+// -15 / -8 = 1.875 (scale = 3)
+ck_assert_msg(exit_code == 0, "\033[31mdiv_negative_by_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_negative_by_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_five_by_eleven
+s21_decimal val1 = {{5, 0, 0, 0}};
+s21_decimal val2 = {{11, 0, 0, 0}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// 5 / 11 = 0.454545...
+ck_assert_msg(exit_code == 0, "\033[31mdiv_five_by_eleven failed: exit_code %d, expected 0\033[0m", exit_code);
+
+# test div_six_by_eleven
+s21_decimal val1 = {{6, 0, 0, 0}};
+s21_decimal val2 = {{11, 0, 0, 0}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// 6 / 11 = 0.545454...
+ck_assert_msg(exit_code == 0, "\033[31mdiv_six_by_eleven failed: exit_code %d, expected 0\033[0m", exit_code);
+
+# test div_five_by_nine
+s21_decimal val1 = {{5, 0, 0, 0}};
+s21_decimal val2 = {{9, 0, 0, 0}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// 5 / 9 = 0.555...
+ck_assert_msg(exit_code == 0, "\033[31mdiv_five_by_nine failed: exit_code %d, expected 0\033[0m", exit_code);
+
+# test div_max_by_fractional
+s21_decimal val1 = DECIMAL_MAX;
+s21_decimal val2 = {{1, 0, 0, (1U << 16)}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// Result should be +INF
+ck_assert_msg(exit_code == 1, "\033[31mdiv_max_by_fractional failed: exit_code %d, expected 1\033[0m", exit_code);
+
+# test div_min_by_fractional
+s21_decimal val1 = DECIMAL_MIN;
+s21_decimal val2 = {{1, 0, 0, (1U << 16)}};
+s21_decimal result;
+int exit_code = s21_div(val1, val2, &result);
+// Result should be -INF
+ck_assert_msg(exit_code == 2, "\033[31mdiv_min_by_fractional failed: exit_code %d, expected 2\033[0m", exit_code);
+
+# test div_large_positive_by_negative
+s21_decimal val1 = {{0x88888888, 0x88888888, 0x88888888, 0}};
+s21_decimal val2 = {{2, 0, 0, 1U << 31}};
+s21_decimal result;
+s21_decimal expected = {{0x44444444, 0x44444444, 0x44444444, 1U << 31}};
+int exit_code = s21_div(val1, val2, &result);
+ck_assert_msg(exit_code == 0, "\033[31mdiv_large_positive_by_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_large_positive_by_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_fractional_scale_adjustment
+s21_decimal val1 = {{35, 0, 0, (1U << 16)}};
+s21_decimal val2 = {{5, 0, 0, (2U << 16)}};
+s21_decimal result;
+s21_decimal expected = {{70, 0, 0, 0}};
+int exit_code = s21_div(val1, val2, &result);
+ck_assert_msg(exit_code == 0, "\033[31mdiv_fractional_scale_adjustment failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_fractional_scale_adjustment failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test div_fractional_scale_adjustment_large
+s21_decimal val1 = {{754, 0, 0, (30U << 16)}};
+s21_decimal val2 = {{2, 0, 0, (1U << 16)}};
+s21_decimal result;
+s21_decimal expected = {{38, 0, 0, (28U << 16)}};
+int exit_code = s21_div(val1, val2, &result);
+ck_assert_msg(exit_code == 0, "\033[31mdiv_fractional_scale_adjustment_large failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mdiv_fractional_scale_adjustment_large failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);

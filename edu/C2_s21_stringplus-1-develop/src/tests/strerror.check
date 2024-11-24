@@ -1,0 +1,10 @@
+# suite s21_strerror_suite
+
+# tcase Basic_Tests
+# test strerror_basic
+
+for(int errnum = 0; errnum < 150; ++errnum){
+char *expected = strerror(errnum);
+char *result = s21_strerror(errnum);
+ck_assert_msg(strcmp(result, expected) == 0, "\033[31mstrerror_basic failed: result '%s', expected '%s'\033[0m", result, expected);
+}

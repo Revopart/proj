@@ -1,0 +1,76 @@
+# suite s21_strpbrk_suite
+
+# tcase Basic_Search_strpbrk
+# test strpbrk_found_first_char
+char str1[] = "Hello, World!";
+char accept1[] = "He";
+char *expected1 = strpbrk(str1, accept1);
+char *result1 = s21_strpbrk(str1, accept1);
+ck_assert_msg(result1 == expected1, "\033[31mstrpbrk_found_first_char failed: result '%p', expected '%p'\033[0m", result1, expected1);
+
+# test strpbrk_no_match
+char str2[] = "Hello, World!";
+char accept2[] = "xyz";
+char *expected2 = strpbrk(str2, accept2);
+char *result2 = s21_strpbrk(str2, accept2);
+ck_assert_msg(result2 == expected2, "\033[31mstrpbrk_no_match failed: result '%p', expected '%p'\033[0m", result2, expected2);
+
+# test strpbrk_last_char
+char str3[] = "Hello, World!";
+char accept3[] = "!";
+char *expected3 = strpbrk(str3, accept3);
+char *result3 = s21_strpbrk(str3, accept3);
+ck_assert_msg(result3 == expected3, "\033[31mstrpbrk_last_char failed: result '%p', expected '%p'\033[0m", result3, expected3);
+
+# test strpbrk_multiple_matches
+char str4[] = "Hello, World!";
+char accept4[] = "oe";
+char *expected4 = strpbrk(str4, accept4);
+char *result4 = s21_strpbrk(str4, accept4);
+ck_assert_msg(result4 == expected4, "\033[31mstrpbrk_multiple_matches failed: result '%p', expected '%p'\033[0m", result4, expected4);
+
+# test strpbrk_empty_accept
+char str5[] = "Hello, World!";
+char accept5[] = "";
+char *expected5 = strpbrk(str5, accept5);
+char *result5 = s21_strpbrk(str5, accept5);
+ck_assert_msg(result5 == expected5, "\033[31mstrpbrk_empty_accept failed: result '%p', expected '%p'\033[0m", result5, expected5);
+
+# tcase Special_Cases_strpbrk
+# test strpbrk_empty_string
+char str6[] = "";
+char accept6[] = "abc";
+char *expected6 = strpbrk(str6, accept6);
+char *result6 = s21_strpbrk(str6, accept6);
+ck_assert_msg(result6 == expected6, "\033[31mstrpbrk_empty_string failed: result '%p', expected '%p'\033[0m", result6, expected6);
+
+# test strpbrk_special_characters
+char str7[] = "Hello, @World!";
+char accept7[] = "@#";
+char *expected7 = strpbrk(str7, accept7);
+char *result7 = s21_strpbrk(str7, accept7);
+ck_assert_msg(result7 == expected7, "\033[31mstrpbrk_special_characters failed: result '%p', expected '%p'\033[0m", result7, expected7);
+
+# test strpbrk_unicode_chars
+char str8[] = "Привет, мир!";
+char accept8[] = "ив";
+char *expected8 = strpbrk(str8, accept8);
+char *result8 = s21_strpbrk(str8, accept8);
+ck_assert_msg(result8 == expected8, "\033[31mstrpbrk_unicode_chars failed: result '%p', expected '%p'\033[0m", result8, expected8);
+
+# test strpbrk_all_matching
+char str9[] = "aaaaaa";
+char accept9[] = "a";
+char *expected9 = strpbrk(str9, accept9);
+char *result9 = s21_strpbrk(str9, accept9);
+ck_assert_msg(result9 == expected9, "\033[31mstrpbrk_all_matching failed: result '%p', expected '%p'\033[0m", result9, expected9);
+
+# test strpbrk_long_string
+char str10[1000];
+memset(str10, 'b', 999);
+str10[999] = '\0';
+char accept10[] = "z";
+char *expected10 = strpbrk(str10, accept10);
+char *result10 = s21_strpbrk(str10, accept10);
+ck_assert_msg(result10 == expected10, "\033[31mstrpbrk_long_string failed: result '%p', expected '%p'\033[0m", result10, expected10);
+

@@ -1,0 +1,29 @@
+
+# suite s21_to_upper_suite
+
+# tcase Basic_Functionality_to_upper
+# test to_upper_basic
+const char str[] = "Hello, World!";
+char expected[] = "HELLO, WORLD!";
+void *result = s21_to_upper(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_upper_basic failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test to_upper_null_string
+const char *str = NULL;
+void *result = s21_to_upper(str);
+ck_assert_msg(result == NULL, "\033[31mto_upper_null_string failed: result %p, expected NULL\033[0m", result);
+
+# test to_upper_empty_string
+const char str[] = "";
+char expected[] = "";
+void *result = s21_to_upper(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_upper_empty_string failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test to_upper_mixed_case
+const char str[] = "HeLlO, WoRlD!";
+char expected[] = "HELLO, WORLD!";
+void *result = s21_to_upper(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_upper_mixed_case failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);

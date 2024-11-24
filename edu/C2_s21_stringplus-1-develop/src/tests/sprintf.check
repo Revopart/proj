@@ -1,0 +1,368 @@
+# suite s21_sprintf_suite
+
+# tcase Sprintf_Basic_Functionality
+
+# test sprintf_char
+char buffer1[256];
+char buffer2[256];
+char ch = 'A';
+s21_sprintf(buffer1, "%c", ch);
+sprintf(buffer2, "%c", ch);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_char failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_string
+char buffer1[256];
+char buffer2[256];
+char *str = "Hello, world!";
+s21_sprintf(buffer1, "%s", str);
+sprintf(buffer2, "%s", str);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_string failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_int
+char buffer1[256];
+char buffer2[256];
+int num = 110;
+s21_sprintf(buffer1, "Unknown error: %d", num);
+sprintf(buffer2, "Unknown error: %d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_int failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_unsigned
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 123;
+s21_sprintf(buffer1, "%u", num);
+sprintf(buffer2, "%u", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_unsigned failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_hex
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 0x123;
+s21_sprintf(buffer1, "%x", num);
+sprintf(buffer2, "%x", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_hex failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_HEX
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 0x123;
+s21_sprintf(buffer1, "%X", num);
+sprintf(buffer2, "%X", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_HEX failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_pointer
+char buffer1[256];
+char buffer2[256];
+void *ptr = (void*)0x1234;
+s21_sprintf(buffer1, "%p", ptr);
+sprintf(buffer2, "%p", ptr);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_pointer failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float
+char buffer1[256];
+char buffer2[256];
+float num = 123.456;
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_octal
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 0123;
+s21_sprintf(buffer1, "%o", num);
+sprintf(buffer2, "%o", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_octal failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_percent
+char buffer1[256];
+char buffer2[256];
+s21_sprintf(buffer1, "%%");
+sprintf(buffer2, "%%");
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_percent failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_n
+char buffer1[256];
+char buffer2[256];
+int n1, n2;
+s21_sprintf(buffer1, "test %n", &n1);
+sprintf(buffer2, "test %n", &n2);
+ck_assert_msg(n1 == n2, "\033[31msprintf_n failed: result %d, expected %d\033[0m", n1, n2);
+
+# tcase Sprintf_Flags
+# test sprintf_flag_plus
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%+d", num);
+sprintf(buffer2, "%+d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_plus failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_space
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "% d", num);
+sprintf(buffer2, "% d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_space failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_zero
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%05d", num);
+sprintf(buffer2, "%05d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_zero failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_minus
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%-5d", num);
+sprintf(buffer2, "%-5d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_minus failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_hash_octal
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 123;
+s21_sprintf(buffer1, "%#o", num);
+sprintf(buffer2, "%#o", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_hash_octal failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_hash_hex
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 123;
+s21_sprintf(buffer1, "%#x", num);
+sprintf(buffer2, "%#x", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_hash_hex failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_flag_hash_HEX
+char buffer1[256];
+char buffer2[256];
+unsigned int num = 123;
+s21_sprintf(buffer1, "%#X", num);
+sprintf(buffer2, "%#X", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_flag_hash_HEX failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# tcase Sprintf_Width_Precision
+# test sprintf_width
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%10d", num);
+sprintf(buffer2, "%10d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_width failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_precision
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%.5d", num);
+sprintf(buffer2, "%.5d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_precision failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_width_precision
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%10.5d", num);
+sprintf(buffer2, "%10.5d", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_width_precision failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_asterisk_width_precision
+char buffer1[256];
+char buffer2[256];
+int num = 123;
+s21_sprintf(buffer1, "%*.*d", 10, 5, num);
+sprintf(buffer2, "%*.*d", 10, 5, num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_asterisk_width_precision failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# tcase Sprintf_Length_Modifiers
+# test sprintf_short
+char buffer1[256];
+char buffer2[256];
+short num = 123;
+s21_sprintf(buffer1, "%hd", num);
+sprintf(buffer2, "%hd", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_short failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_long
+char buffer1[256];
+char buffer2[256];
+long num = 123;
+s21_sprintf(buffer1, "%ld", num);
+sprintf(buffer2, "%ld", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_long failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_long_long
+char buffer1[256];
+char buffer2[256];
+long long num = 123;
+s21_sprintf(buffer1, "%lld", num);
+sprintf(buffer2, "%lld", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_long_long failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_signed_char
+char buffer1[256];
+char buffer2[256];
+signed char num = 123;
+s21_sprintf(buffer1, "%hhd", num);
+sprintf(buffer2, "%hhd", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_signed_char failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_unsigned_short
+char buffer1[256];
+char buffer2[256];
+unsigned short num = 123;
+s21_sprintf(buffer1, "%hu", num);
+sprintf(buffer2, "%hu", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_unsigned_short failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_unsigned_long
+char buffer1[256];
+char buffer2[256];
+unsigned long num = 123;
+s21_sprintf(buffer1, "%lu", num);
+sprintf(buffer2, "%lu", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_unsigned_long failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_unsigned_long_long
+char buffer1[256];
+char buffer2[256];
+unsigned long long num = 123;
+s21_sprintf(buffer1, "%llu", num);
+sprintf(buffer2, "%llu", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_unsigned_long_long failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# tcase Sprintf_Floating_Point
+
+# test sprintf_float_simple
+char buffer1[256];
+char buffer2[256];
+float num = 123.456;
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_simple failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_large
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_large failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_negative
+char buffer1[256];
+char buffer2[256];
+double num = -123.456;
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_negative failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_precision
+char buffer1[256];
+char buffer2[256];
+double num = 123.456789;
+s21_sprintf(buffer1, "%.2f", num);
+sprintf(buffer2, "%.2f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_precision failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_large_precision
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%.6f", num);
+sprintf(buffer2, "%.6f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_large_precision failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_scientific
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%e", num);
+sprintf(buffer2, "%e", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_scientific failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_scientific_upper
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%E", num);
+sprintf(buffer2, "%E", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_scientific_upper failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_g
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%g", num);
+sprintf(buffer2, "%g", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_g failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_G
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%G", num);
+sprintf(buffer2, "%G", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_G failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_with_flags
+char buffer1[256];
+char buffer2[256];
+double num = 123.456;
+s21_sprintf(buffer1, "%+010.2f", num);
+sprintf(buffer2, "%+010.2f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_with_flags failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_neg_with_0
+char buffer1[256];
+char buffer2[256];
+double num = -123.456;
+s21_sprintf(buffer1, "%05f", num);
+sprintf(buffer2, "%05f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_neg_with_0 failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_neg
+char buffer1[256];
+char buffer2[256];
+double num = -123.456;
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_neg failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+
+# test sprintf_float_large_with_flags
+char buffer1[256];
+char buffer2[256];
+double num = 1234567890.123456;
+s21_sprintf(buffer1, "%+020.10f", num);
+sprintf(buffer2, "%+020.10f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_large_with_flags failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_negative_with_flags
+char buffer1[256];
+char buffer2[256];
+double num = -123.456;
+s21_sprintf(buffer1, "%-10.2f", num);
+sprintf(buffer2, "%-10.2f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_negative_with_flags failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+# test sprintf_float_special_values
+char buffer1[256];
+char buffer2[256];
+char buffer3[256];
+char buffer4[256];
+
+double num = 1.0 / 0.0;  // NaN
+s21_sprintf(buffer1, "%f", num);
+sprintf(buffer2, "%f", num);
+ck_assert_msg(strcmp(buffer1, buffer2) == 0, "\033[31msprintf_float_special_values (NaN) failed: result '%s', expected '%s'\033[0m", buffer1, buffer2);
+
+num = 1.0 / 0.0;  // Infinity
+s21_sprintf(buffer3, "%f", num);
+sprintf(buffer4, "%f", num);
+//ck_assert_msg(strcmp(buffer3, buffer4) == 0, "\033[31msprintf_float_special_values (Infinity) failed: result '%s', expected '%s'\033[0m", buffer3, buffer4);

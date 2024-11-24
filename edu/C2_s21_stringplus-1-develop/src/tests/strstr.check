@@ -1,0 +1,75 @@
+# suite s21_strstr_suite
+
+# tcase Basic_Search_strstr
+# test strstr_basic_match
+char main_str1[] = "Hello, World!";
+char search_str1[] = "World";
+char *expected1 = strstr(main_str1, search_str1);
+char *result1 = s21_strstr(main_str1, search_str1);
+ck_assert_msg(result1 == expected1, "\033[31mstrstr_basic_match failed: result '%s', expected '%s'\033[0m", result1, expected1);
+
+# test strstr_no_match
+char main_str2[] = "Hello, World!";
+char search_str2[] = "planet";
+char *expected2 = strstr(main_str2, search_str2);
+char *result2 = s21_strstr(main_str2, search_str2);
+ck_assert_msg(result2 == expected2, "\033[31mstrstr_no_match failed: result '%p', expected '%p'\033[0m", result2, expected2);
+
+# test strstr_match_at_start
+char main_str3[] = "Hello, World!";
+char search_str3[] = "Hello";
+char *expected3 = strstr(main_str3, search_str3);
+char *result3 = s21_strstr(main_str3, search_str3);
+ck_assert_msg(result3 == expected3, "\033[31mstrstr_match_at_start failed: result '%s', expected '%s'\033[0m", result3, expected3);
+
+# test strstr_match_at_end
+char main_str4[] = "Hello, World!";
+char search_str4[] = "!";
+char *expected4 = strstr(main_str4, search_str4);
+char *result4 = s21_strstr(main_str4, search_str4);
+ck_assert_msg(result4 == expected4, "\033[31mstrstr_match_at_end failed: result '%s', expected '%s'\033[0m", result4, expected4);
+
+# test strstr_empty_needle
+char main_str5[] = "Hello, World!";
+char search_str5[] = "";
+char *expected5 = strstr(main_str5, search_str5);
+char *result5 = s21_strstr(main_str5, search_str5);
+ck_assert_msg(result5 == expected5, "\033[31mstrstr_empty_needle failed: result '%s', expected '%c'\033[0m", result5, *expected5);
+
+# tcase Special_Cases_strstr
+# test strstr_repeating_pattern
+char main_str6[] = "Banana Bandana Banana";
+char search_str6[] = "ana";
+char *expected6 = strstr(main_str6, search_str6);
+char *result6 = s21_strstr(main_str6, search_str6);
+ck_assert_msg(result6 == expected6, "\033[31mstrstr_repeating_pattern failed: result '%s', expected '%s'\033[0m", result6, expected6);
+
+# test strstr_case_sensitive
+char main_str7[] = "hello HELLO HeLLo";
+char search_str7[] = "HELLO";
+char *expected7 = strstr(main_str7, search_str7);
+char *result7 = s21_strstr(main_str7, search_str7);
+ck_assert_msg(result7 == expected7, "\033[31mstrstr_case_sensitive failed: result '%s', expected '%s'\033[0m", result7, expected7);
+
+# test strstr_special_characters
+char main_str8[] = "This & That";
+char search_str8[] = "&";
+char *expected8 = strstr(main_str8, search_str8);
+char *result8 = s21_strstr(main_str8, search_str8);
+ck_assert_msg(result8 == expected8, "\033[31mstrstr_special_characters failed: result '%s', expected '%s'\033[0m", result8, expected8);
+
+# test strstr_unicode_chars
+char main_str9[] = "Привет, мир!";
+char search_str9[] = "мир";
+char *expected9 = strstr(main_str9, search_str9);
+char *result9 = s21_strstr(main_str9, search_str9);
+ck_assert_msg(result9 == expected9, "\033[31mstrstr_unicode_chars failed: result '%s', expected '%s'\033[0m", result9, expected9);
+
+# test strstr_long_string
+char main_str10[1000];
+memset(main_str10, 'a', 999);
+main_str10[999] = '\0';
+char search_str10[] = "aaa";
+char *expected10 = strstr(main_str10, search_str10);
+char *result10 = s21_strstr(main_str10, search_str10);
+ck_assert_msg(result10 == expected10, "\033[31mstrstr_long_string failed: result '%s', expected '%s'\033[0m", result10, expected10);

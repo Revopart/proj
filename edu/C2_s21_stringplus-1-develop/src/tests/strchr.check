@@ -1,0 +1,66 @@
+# suite s21_strchr_suite
+
+# tcase Basic_Search_strchr
+# test strchr_basic
+char str[] = "Hello, World!";
+int ch = 'W';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_basic failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_no_match
+char str[] = "Hello, World!";
+int ch = 'z';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_no_match failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_null_char
+char str[] = "Hello, World!\0Extra";
+int ch = '\0';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_null_char failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_first_char
+char str[] = "Hello, World!";
+int ch = 'H';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_first_char failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_last_char
+char str[] = "Hello, World!";
+int ch = '!';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_last_char failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# tcase Special_Cases
+# test strchr_repeating_char
+char str[] = "Banana";
+int ch = 'a';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_repeating_char failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_case_sensitive
+char str[] = "Hello, world!";
+int ch = 'W';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_case_sensitive failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_non_printable
+char str[] = {0x01, 0x02, 0x03, 0x00};
+int ch = 0x02;
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_non_printable failed: result '%p', expected '%p'\033[0m", result, expected);
+
+# test strchr_multiple_instances
+char str[] = "Hello, Hello, Hello!";
+int ch = 'e';
+char *expected = strchr(str, ch);
+char *result = s21_strchr(str, ch);
+ck_assert_msg(result == expected, "\033[31mstrchr_multiple_instances failed: result '%p', expected '%p'\033[0m", result, expected);

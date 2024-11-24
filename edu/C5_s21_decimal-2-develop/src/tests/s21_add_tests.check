@@ -1,0 +1,112 @@
+# suite s21_add_test_suite
+
+# tcase Addition_Basic_Functionality
+
+# test add_zero_and_zero
+s21_decimal value_1 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal value_2 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal result;
+s21_decimal expected = {{0x0, 0x0, 0x0, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_zero_and_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_zero_and_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_one_and_zero
+s21_decimal value_1 = {{0x1, 0x0, 0x0, 0x0}};
+s21_decimal value_2 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal result;
+s21_decimal expected = {{0x1, 0x0, 0x0, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_one_and_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_one_and_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_zero_and_one
+s21_decimal value_1 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal value_2 = {{0x1, 0x0, 0x0, 0x0}};
+s21_decimal result;
+s21_decimal expected = {{0x1, 0x0, 0x0, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_zero_and_one failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_zero_and_one failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_max_and_zero
+s21_decimal value_1 = DECIMAL_MAX;
+s21_decimal value_2 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal result;
+s21_decimal expected = DECIMAL_MAX;
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_max_and_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_max_and_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_zero_and_max
+s21_decimal value_1 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal value_2 = DECIMAL_MAX;
+s21_decimal result;
+s21_decimal expected = DECIMAL_MAX;
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_zero_and_max failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_zero_and_max failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_min_and_zero
+s21_decimal value_1 = DECIMAL_MIN;
+s21_decimal value_2 = {{0x0, 0x0, 0x0, 0x0}};
+s21_decimal result;
+s21_decimal expected = DECIMAL_MIN;
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_min_and_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_min_and_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_max_and_min
+s21_decimal value_1 = DECIMAL_MAX;
+s21_decimal value_2 = DECIMAL_MIN;
+s21_decimal result;
+s21_decimal expected = {{0x0, 0x0, 0x0, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_max_and_min failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_max_and_min failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_max_and_large_negative
+s21_decimal value_1 = DECIMAL_MAX;
+s21_decimal value_2 = {{0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 1U << 31}};
+s21_decimal result;
+s21_decimal expected = {{0x1, 0x0, 0x0, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_max_and_large_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_max_and_large_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test add_max_and_negative
+s21_decimal value_1 = DECIMAL_MAX;
+s21_decimal value_2 = {{0x99999999, 0x99999999, 0x19999999, 0x80000000}};
+s21_decimal result;
+s21_decimal expected = {{0x66666666, 0x66666666, 0xE6666666, 0x0}};
+int exit_code = s21_add(value_1, value_2, &result);
+ck_assert_msg(exit_code == 0, "\033[31madd_max_and_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31madd_max_and_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+

@@ -1,0 +1,63 @@
+# suite s21_floor_test_suite
+
+# tcase Floor_Basic_Functionality
+
+//# test floor_positive
+//s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (scale = 2)
+//s21_decimal result;
+//s21_decimal expected = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 1
+//int exit_code = s21_floor(value, &result);
+//ck_assert_msg(exit_code == 0, "\033[31mfloor_positive failed: exit_code %d, expected 0\033[0m", exit_code);
+//ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+//"\033[31mfloor_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+//result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+//expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+//# test floor_negative
+//s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -1.23 (scale = 2, sign = 1)
+//s21_decimal result;
+//s21_decimal expected = {{0b00000000000000000000000000000010, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}}; // -2
+//int exit_code = s21_floor(value, &result);
+//ck_assert_msg(exit_code == 0, "\033[31mfloor_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+//ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+//"\033[31mfloor_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+//result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+//expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test floor_integer_positive
+s21_decimal value = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 4 (integer)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 4
+int exit_code = s21_floor(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mfloor_integer_positive failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfloor_integer_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test floor_integer_negative
+s21_decimal value = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}};  // -4 (integer, sign = 1)
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000100, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}}; // -4
+int exit_code = s21_floor(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mfloor_integer_negative failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfloor_integer_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test floor_zero
+s21_decimal value = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+int exit_code = s21_floor(value, &result);
+ck_assert_msg(exit_code == 0, "\033[31mfloor_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfloor_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test floor_null_pointer
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 1.23 (scale = 2)
+int exit_code = s21_floor(value, NULL);
+ck_assert_msg(exit_code == 1, "\033[31mfloor_null_pointer failed: exit_code %d, expected 1\033[0m", exit_code);

@@ -1,0 +1,10 @@
+Hello, World!
+This is an example file.
+It contains some lines of text. lineline
+The lines may or may not have the word "example" in them.
+
+This line doesn't
+
+
+Some lines may have the word example twice, there and here: example.
+Also could be words here which differ by the register, like "Example".

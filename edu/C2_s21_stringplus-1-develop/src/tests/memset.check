@@ -1,0 +1,25 @@
+# suite s21_memset_suite
+
+# tcase Basic_Functionality_memset
+# test memset_basic
+char str_basic[20] = "Hello, world!";
+int c_basic = '-';
+size_t n_basic = 7;
+char expected_basic[] = "-------world!";
+char *result_basic = (char *)s21_memset(str_basic, c_basic, n_basic);
+ck_assert_str_eq(result_basic, expected_basic);
+
+# test memset_full_string
+char str_full[20] = "Hello, world!";
+int c_full = '-';
+size_t n_full = strlen(str_full);
+char expected_full[] = "-------------";  // Correct length is 13 dashes (without null terminator)
+char *result_full = (char *)s21_memset(str_full, c_full, n_full);
+ck_assert_str_eq(result_full, expected_full);
+
+# test memset_null_str
+char *str_null = NULL;
+int c_null = '-';
+size_t n_null = 7;
+void *result_null = s21_memset(str_null, c_null, n_null);
+ck_assert_ptr_eq(result_null, NULL);

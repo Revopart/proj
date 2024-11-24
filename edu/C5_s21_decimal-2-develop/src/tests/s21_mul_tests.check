@@ -1,0 +1,33 @@
+# suite s21_mul_test_suite
+
+# tcase Multiplication_Basic_Functionality
+
+
+# test mul_max_by_fractional
+s21_decimal val1 = DECIMAL_MAX;
+s21_decimal val2 = {{0b00000000000000000000000000001011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000010000000000000000}}; // 11 * 10^-4
+s21_decimal result;
+int exit_code = s21_mul(val1, val2, &result);
+// Result should overflow
+ck_assert_msg(exit_code == 1, "\033[31mmul_max_by_fractional failed: exit_code %d, expected 1\033[0m", exit_code);
+
+# test mul_max_by_negative_fractional
+s21_decimal val1 = DECIMAL_MAX;
+s21_decimal val2 = {{0b00000000000000000000000000001011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000010000000000000000}}; // -11 * 10^-4
+s21_decimal result;
+int exit_code = s21_mul(val1, val2, &result);
+// Result should underflow
+ck_assert_msg(exit_code == 2, "\033[31mmul_max_by_negative_fractional failed: exit_code %d, expected 2\033[0m", exit_code);
+
+# test mul_max_by_zero
+s21_decimal val1 = DECIMAL_MAX;
+s21_decimal val2 = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}}; // 0
+int exit_code = s21_mul(val1, val2, &result);
+ck_assert_msg(exit_code == 0, "\033[31mmul_max_by_zero failed: exit_code %d, expected 0\033[0m", exit_code);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mmul_max_by_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+

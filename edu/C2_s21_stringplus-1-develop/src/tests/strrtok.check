@@ -1,0 +1,69 @@
+
+
+#suite s21_strtok
+
+#test test_s21_strtok_one_delimeter_once
+// Try to cut the string with space delimeter. One time
+char str[20] = "word1 word2 word3";
+char s21_str[20] = "word1 word2 word3";
+char delim[20] = " ";
+ck_assert_str_eq(strtok(str, delim), s21_strtok(s21_str, delim));
+
+#test test_s21_strtok_one_delimeter_twice
+// Try to cut the string with space delimeter. Twice
+char str[20] = "word1 word2 word3";
+char s21_str[20] = "word1 word2 word3";
+char delim[20] = " ";
+strtok(str, delim);
+s21_strtok(s21_str, delim);
+ck_assert_str_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+
+#test test_s21_strtok_trailing_delimeter
+// Test what string returns when have trailing delimeters
+char str[20] = " word1";
+char s21_str[20] = " word1";
+char delim[20] = " ";
+ck_assert_str_eq(strtok(str, delim), s21_strtok(s21_str, delim));
+
+#test test_s21_strtok_returns_null_if_no_more_delimeters_found
+// Try to cut the string not delimeters found
+char str[20] = "word1 word2";
+char s21_str[20] = "word1 word2";
+char delim[20] = " ";
+strtok(str, delim);
+s21_strtok(s21_str, delim);
+strtok(NULL, delim);
+s21_strtok(NULL, delim);
+ck_assert_ptr_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+
+#test s21_strtok_three_delimeter_that_used_once
+// Try to cut the string with different delimeters used once.
+// Same assert has to be called several times.
+char str[50] = "word1 word2,word3;word4";
+char s21_str[50] = "word1 word2,word3;word4";
+char delim[20] = " ,;";
+ck_assert_str_eq(strtok(str, delim), s21_strtok(s21_str, delim));
+ck_assert_str_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+ck_assert_str_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+ck_assert_str_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+
+#test test_s21_strtok_delimeter_used_several_times
+// Try to cut the string with space delimeter
+char str[50] = "word1 ;word2, ;";
+char s21_str[50] = "word1 ;word2, ;";
+char delim[20] = " ,;";
+ck_assert_str_eq(strtok(str, delim), s21_strtok(s21_str, delim));
+ck_assert_str_eq(strtok(NULL, delim), s21_strtok(NULL, delim));
+
+#test test_s21_strtok_source_sting_has_only_delimeters
+// Try to cut the string that have only delimeters
+char str[50] = " ,;  , ;,,,,,;;  ;,";
+char s21_str[50] = " ,;  , ;,,,,,;;  ;,";
+char delim[20] = " ,;";
+ck_assert_ptr_eq(strtok(str, delim), s21_strtok(s21_str, delim));
+
+#test test_s21_strtok_source_sting_is_null
+// Try to cut NULL string. We not compare results with original strtok because
+// it fails (segmentation fault) on linux.
+char delim[20] = " ,;";
+ck_assert_ptr_eq(s21_strtok(NULL, delim), NULL);

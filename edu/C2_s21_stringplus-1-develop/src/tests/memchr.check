@@ -1,0 +1,54 @@
+# suite s21_memchr_comparison_suite
+
+# tcase Memchr_Basic_Functionality
+# test memchr_basic
+char str[] = "example string";
+int ch = 'a';
+char *expected = memchr(str, ch, strlen(str));
+char *result = s21_memchr(str, ch, strlen(str));
+ck_assert_msg(result == expected, "\033[31mmemchr_basic failed: result %p, expected %p\033[0m", result, expected);
+
+# test memchr_no_occurrence
+char str[] = "test string";
+int ch = 'z';
+char *expected = memchr(str, ch, strlen(str));
+char *result = s21_memchr(str, ch, strlen(str));
+ck_assert_msg(result == expected, "\033[31mmemchr_no_occurrence failed: result %p, expected %p\033[0m", result, expected);
+
+# tcase Edge_Cases
+# test memchr_null_string
+char *str = NULL;
+int ch = 'a';
+size_t n = 0;
+char *result = s21_memchr(str, ch, n);
+char *expected = memchr(str, ch, n);
+ck_assert_msg(result == expected, "\033[31mmemchr_null_string failed: result %p, expected %p\033[0m", result, expected);
+
+# test memchr_zero_length
+char str[] = "non-empty";
+int ch = 'n';
+char *result = s21_memchr(str, ch, 0);
+char *expected = memchr(str, ch, 0);
+ck_assert_msg(result == expected, "\033[31mmemchr_zero_length failed: result %p, expected %p\033[0m", result, expected);
+
+# test memchr_full_search
+char str[] = "multiple characters character";
+int ch = 'c';
+char *expected = memchr(str, ch, strlen(str));
+char *result = s21_memchr(str, ch, strlen(str));
+ck_assert_msg(result == expected, "\033[31mmemchr_full_search failed: result %p, expected %p\033[0m", result, expected);
+
+# test memchr_search_limit
+char str[] = "search limit test";
+int ch = 't';
+char *result = s21_memchr(str, ch, 5);
+char *expected = memchr(str, ch, 5);
+ck_assert_msg(result == expected, "\033[31mmemchr_search_limit failed: result %p, expected %p\033[0m", result, expected);
+
+# tcase Special_Types
+# test memchr_unsigned_char
+unsigned char str[] = {0xFF, 0xFE, 0xFD, 0xFC, 0x00};
+int ch = 0xFD;
+unsigned char *expected = memchr(str, ch, sizeof(str));
+unsigned char *result = (unsigned char *)s21_memchr(str, ch, sizeof(str));
+ck_assert_msg(result == expected, "\033[31mmemchr_unsigned_char failed: result %p, expected %p\033[0m", result, expected);

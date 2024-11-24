@@ -1,0 +1,63 @@
+# suite s21_from_int_to_decimal_test_suite
+
+# tcase From_Int_To_Decimal_Basic_Functionality
+
+# test from_int_to_decimal_positive
+int src = 123;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 123
+int error_status = s21_from_int_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_int_to_decimal_positive failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_int_to_decimal_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033{{0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_int_to_decimal_negative
+int src = -123;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}};  // -123
+int error_status = s21_from_int_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_int_to_decimal_negative failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_int_to_decimal_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_int_to_decimal_zero
+int src = 0;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+int error_status = s21_from_int_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_int_to_decimal_zero failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_int_to_decimal_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_int_to_decimal_large_positive
+int src = 2147483647;  // Максимальное значение для типа int
+s21_decimal result;
+s21_decimal expected = {{0b01111111111111111111111111111111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 2147483647
+int error_status = s21_from_int_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_int_to_decimal_large_positive failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_int_to_decimal_large_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_int_to_decimal_large_negative
+int src = -2147483647;  // Максимальное отрицательное значение для типа int (отрицательный максимум)
+s21_decimal result;
+s21_decimal expected = {{0b01111111111111111111111111111111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}};  // -2147483647
+int error_status = s21_from_int_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_int_to_decimal_large_negative failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_int_to_decimal_large_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_int_to_decimal_null_pointer
+int src = 123;
+int error_status = s21_from_int_to_decimal(src, NULL);
+ck_assert_msg(error_status == 1, "\033[31mfrom_int_to_decimal_null_pointer failed: error_status %d, expected 1\033[0m", error_status);

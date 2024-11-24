@@ -1,0 +1,86 @@
+# suite s21_memcmp_suite
+
+# tcase Memcmp_Basic_Comparison
+# test memcmp_equal
+char str1[] = "Test string";
+char str2[] = "Test string";
+int n = strlen(str1);
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_equal failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_not_equal
+char str1[] = "Test string";
+char str2[] = "test string";
+int n = strlen(str1);
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_not_equal failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_first_smaller
+char str1[] = "aaa";
+char str2[] = "bbb";
+int n = 3;
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_first_smaller failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_first_greater
+char str1[] = "ccc";
+char str2[] = "bbb";
+int n = 3;
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_first_greater failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_zero_length
+char str1[] = "text";
+char str2[] = "text";
+int n = 0;
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_zero_length failed: result %d, expected %d\033[0m", result, expected);
+
+# tcase Memcmp_Edge_Cases
+# test memcmp_partial_compare
+char str1[] = "Hello world";
+char str2[] = "Hello there";
+int n = 5;  // Only compare "Hello"
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_partial_compare failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_with_null_bytes
+char str1[] = {0, 1, 2, 3, 0};
+char str2[] = {0, 1, 2, 2, 0};
+int n = 5;
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_with_null_bytes failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_different_lengths
+char str1[] = "short";
+char str2[] = "shorter";
+int n = 6;  // Only compare first 6 characters
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_different_lengths failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_large_data
+char str1[1000];
+char str2[1000];
+memset(str1, 'a', 1000);
+memset(str2, 'a', 1000);
+str2[999] = 'b';
+int n = 1000;
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_large_data failed: result %d, expected %d\033[0m", result, expected);
+
+# test memcmp_signed_char
+signed char str1[] = {-128, 127, -1, 0, 1, 2};
+signed char str2[] = {-128, 127, -1, 0, 1, 3};
+int n = sizeof(str1);
+int expected = memcmp(str1, str2, n);
+int result = s21_memcmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mmemcmp_signed_char failed: result %d, expected %d\033[0m", result, expected);

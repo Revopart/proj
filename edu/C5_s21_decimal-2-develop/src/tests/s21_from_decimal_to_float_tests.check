@@ -1,0 +1,54 @@
+# suite s21_from_decimal_to_float_test_suite
+
+# tcase From_Decimal_To_Float_Basic_Functionality
+
+# test from_decimal_to_float_positive
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 123e-2 = 1.23 (scale = 2)
+float result;
+float expected = 1.23f;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_float_positive failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(fabs(result - expected) < 0.000001, "\033[31mfrom_decimal_to_float_positive failed: result %f, expected %f\033[0m", result, expected);
+
+# test from_decimal_to_float_negative
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -123e-2 = -1.23 (scale = 2, sign = 1)
+float result;
+float expected = -1.23f;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_float_negative failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(fabs(result - expected) < 0.000001, "\033[31mfrom_decimal_to_float_negative failed: result %f, expected %f\033[0m", result, expected);
+
+# test from_decimal_to_float_large_scale
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // 123e-28 (scale = 28)
+float result;
+float expected = 1.23e-26f;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_float_large_scale failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(fabs(result - expected) < 1e-32, "\033[31mfrom_decimal_to_float_large_scale failed: result %e, expected %e\033[0m", result, expected);
+
+# test from_decimal_to_float_zero
+s21_decimal value = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+float result;
+float expected = 0.0f;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_float_zero failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_float_zero failed: result %f, expected %f\033{{0m", result, expected);
+
+# test from_decimal_to_float_null_pointer
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 123e-2 = 1.23 (scale = 2)
+int error_status = s21_from_decimal_to_float(value, NULL);
+ck_assert_msg(error_status == 1, "\033[31mfrom_decimal_to_float_null_pointer failed: error_status %d, expected 1\033[0m", error_status);
+
+# test from_decimal_to_float_non_zero_bits_1_2
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // Неверное значение, bits[1] не ноль
+float result;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 1, "\033[31mfrom_decimal_to_float_non_zero_bits_1_2 failed: error_status %d, expected 1\033[0m", error_status);
+
+# test from_decimal_to_float_negative_large_scale
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000111000000000000000000}};  // -123e-28 (scale = 28, sign = 1)
+float result;
+float expected = -1.23e-26f;
+int error_status = s21_from_decimal_to_float(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_float_negative_large_scale failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(fabs(result - expected) < 1e-32, "\033[31mfrom_decimal_to_float_negative_large_scale failed: result %e, expected %e\033[0m", result, expected);

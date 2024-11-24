@@ -1,0 +1,85 @@
+# suite s21_from_float_to_decimal_test_suite
+
+# tcase From_Float_To_Decimal_Basic_Functionality
+
+# test from_float_to_decimal_positive
+float src = 1.23f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 123e-2 (scale = 2)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_positive failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_positive failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_negative
+float src = -1.23f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -123e-2 (scale = 2, sign = 1)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_negative failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_negative failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_large_scale
+float src = 1.23e-26f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // 123e-28 (scale = 28)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_large_scale failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_large_scale failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_zero
+float src = 0.0f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_zero failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_zero failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_large_value
+float src = 1234567.0f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000100101101011010000111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 1234567 (scale = 0)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_large_value failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_large_value failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_large_negative_value
+float src = -1234567.0f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000100101101011010000111, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000000000000000000000}};  // -1234567 (scale = 0, sign = 1)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_large_negative_value failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_large_negative_value failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_small_value
+float src = 0.0000001f;
+s21_decimal result;
+s21_decimal expected = {{0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000001110000000000000000}};  // 1e-7 (scale = 7)
+int error_status = s21_from_float_to_decimal(src, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_float_to_decimal_small_value failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(memcmp(&result, &expected, sizeof(s21_decimal)) == 0,
+"\033[31mfrom_float_to_decimal_small_value failed:\n result bits:\n    %u\n    %u\n    %u\n    %u,\n expected bits:\n    %u\n    %u\n    %u\n    %u\033[0m",
+result.bits[3], result.bits[2], result.bits[1], result.bits[0],
+expected.bits[3], expected.bits[2], expected.bits[1], expected.bits[0]);
+
+# test from_float_to_decimal_null_pointer
+float src = 1.23f;
+int error_status = s21_from_float_to_decimal(src, NULL);
+ck_assert_msg(error_status == 1, "\033[31mfrom_float_to_decimal_null_pointer failed: error_status %d, expected 1\033[0m", error_status);

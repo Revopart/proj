@@ -1,0 +1,58 @@
+
+# suite s21_strncmp_suite
+
+# tcase Basic_Functionality_strncmp
+# test strncmp_basic
+const char str1[] = "Hello";
+const char str2[] = "Hello";
+const size_t n = 5;
+const int expected = 0;
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_basic failed: result %d, expected %d\033[0m", result, expected);
+
+# test strncmp_different
+const char str1[] = "Hello";
+const char str2[] = "World";
+const size_t n = 5;
+const int expected = 'H' - 'W';
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_different failed: result %d, expected %d\033[0m", result, expected);
+
+# test strncmp_partial
+const char str1[] = "Hello";
+const char str2[] = "Hel";
+const size_t n = 4;
+const int expected = 'l' - '\0';
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_partial failed: result %d, expected %d\033[0m", result, expected);
+
+# test strncmp_empty_string
+const char *str1 = "";
+const char *str2 = "";
+int result = s21_strncmp(str1, str2, 1);
+ck_assert_msg(result == 0, "\033[31mstrncmp_empty_string failed: result %d, expected 0\033[0m", result);
+
+
+# test strncmp_zero_length
+const char str1[] = "Hello";
+const char str2[] = "World";
+const size_t n = 0;
+const int expected = 0;
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_zero_length failed: result %d, expected %d\033[0m", result, expected);
+
+# test strncmp_empty_str1
+const char str1[] = "";
+const char str2[] = "World";
+const size_t n = 5;
+const int expected = -'W';
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_empty_str1 failed: result %d, expected %d\033[0m", result, expected);
+
+# test strncmp_empty_str2
+const char str1[] = "Hello";
+const char str2[] = "";
+const size_t n = 5;
+const int expected = 'H';
+int result = s21_strncmp(str1, str2, n);
+ck_assert_msg(result == expected, "\033[31mstrncmp_empty_str2 failed: result %d, expected %d\033[0m", result, expected);

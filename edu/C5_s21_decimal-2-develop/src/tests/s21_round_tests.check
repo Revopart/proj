@@ -1,0 +1,80 @@
+# suite s21_round_test_suite
+
+# tcase Round_Basic_Functionality
+
+# test round_positive_max_no_fraction
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0}}; // 79228162514264337593543950335
+s21_decimal expected = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0}}; // 79228162514264337593543950335
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_positive_max_no_fraction failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_positive_max_no_fraction failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_positive_max_no_fraction failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_negative_max_no_fraction
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}}; // -79228162514264337593543950335
+s21_decimal expected = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80000000}}; // -79228162514264337593543950335
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_negative_max_no_fraction failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_negative_max_no_fraction failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_negative_max_no_fraction failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_positive_fractional
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x10000}}; // 7922816251426433759354395033.5
+s21_decimal expected = {{0x9999999A, 0x99999999, 0x19999999, 0x0}}; // 7922816251426433759354395034
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_positive_fractional failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_positive_fractional failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_positive_fractional failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_negative_fractional
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80010000}}; // -7922816251426433759354395033.5
+s21_decimal expected = {{0x9999999A, 0x99999999, 0x19999999, 0x80000000}}; // -7922816251426433759354395034
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_negative_fractional failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_negative_fractional failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_negative_fractional failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_positive_fractional_2
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x20000}}; // 792281625142643375935439503.35
+s21_decimal expected = {{0x28F5C28F, 0xF5C28F5C, 0x28F5C28, 0x0}}; // 792281625142643375935439503
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_positive_fractional_2 failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_positive_fractional_2 failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_positive_fractional_2 failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_negative_fractional_2
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x80020000}}; // -792281625142643375935439503.35
+s21_decimal expected = {{0x28F5C28F, 0xF5C28F5C, 0x28F5C28, 0x80000000}}; // -792281625142643375935439503
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_negative_fractional_2 failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_negative_fractional_2 failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_negative_fractional_2 failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);
+
+# test round_positive_fractional_3
+s21_decimal decimal = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x30000}}; // 79228162514264337593543950.335
+s21_decimal expected = {{0x9DB22D0E, 0x4BC6A7EF, 0x418937, 0x0}}; // 79228162514264337593543950
+s21_decimal result;
+int res = s21_round(decimal, &result);
+int sign_check = s21_get_sign(expected);
+int sign_result = s21_get_sign(result);
+ck_assert_msg(res == 0, "\033[31mround_positive_fractional_3 failed: res %d, expected 0\033[0m", res);
+ck_assert_msg(s21_is_not_equal(result, expected) == 0, "\033[31mround_positive_fractional_3 failed: result is not equal to expected\033[0m");
+ck_assert_msg(sign_check == sign_result, "\033[31mround_positive_fractional_3 failed: sign_check %d, sign_result %d\033[0m", sign_check, sign_result);

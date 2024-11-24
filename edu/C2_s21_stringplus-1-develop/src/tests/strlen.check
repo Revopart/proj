@@ -1,0 +1,23 @@
+# suite s21_strlen_suite
+
+# tcase strlen_Basic_Copy
+# test strlen_basic_1
+
+char str[] = "Hello world";
+size_t expected = strlen(str);
+size_t result = s21_strlen(str);
+ck_assert_msg(result == expected, "\033[31m strlen_basic_1 failed: result %zu, expected %zu \033[0m", result, expected);
+
+# test strlen_basic_2
+
+char str[] = "";
+size_t expected = strlen(str);
+size_t result = s21_strlen(str);
+ck_assert_msg(result == expected, "\033[31m strlen_basic_2 failed: result %zu, expected %zu\033[0m", result, expected);
+
+# test strlen_basic
+
+char *str = " ";
+size_t expected = strlen(str);
+size_t result = s21_strlen(str);
+ck_assert_msg(result == expected, "\033[31m strlen_basic_3 failed: result %zu, expected %zu\033[0m", result, expected);

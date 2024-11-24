@@ -1,0 +1,75 @@
+# suite s21_memcpy_suite
+
+# tcase memcpy_Basic_Copy
+# test memcpy_basic
+char src[] = "Hello, World!";
+char dest[100], s21_dest[100];
+memcpy(dest, src, strlen(src) + 1);
+s21_memcpy(s21_dest, src, strlen(src) + 1);
+ck_assert_msg(memcmp(dest, s21_dest, strlen(src) + 1) == 0, "\033[31mmemcpy_basic failed\033[0m");
+
+# test memcpy_zero_length
+char src[] = "Data";
+char dest[100] = "Initial", s21_dest[100] = "Initial";
+memcpy(dest, src, 0);
+s21_memcpy(s21_dest, src, 0);
+ck_assert_msg(memcmp(dest, s21_dest, strlen("Initial") + 1) == 0, "\033[31mmemcpy_zero_length failed\033[0m");
+
+# test memcpy_large_data
+char large_src[1000], large_dest[1000], s21_large_dest[1000];
+memset(large_src, 'A', 1000);
+memcpy(large_dest, large_src, 1000);
+s21_memcpy(s21_large_dest, large_src, 1000);
+ck_assert_msg(memcmp(large_dest, s21_large_dest, 1000) == 0, "\033[31mmemcpy_large_data failed\033[0m");
+
+# tcase memcpy_Edge_Cases
+# test memcpy_partial
+char partial_src[] = "Example string";
+char partial_dest[100], s21_partial_dest[100];
+memcpy(partial_dest, partial_src, 7);
+s21_memcpy(s21_partial_dest, partial_src, 7);
+ck_assert_msg(memcmp(partial_dest, s21_partial_dest, 7) == 0, "\033[31mmemcpy_partial failed\033[0m");
+
+# test memcpy_to_empty_dest
+char empty_src[] = "Full string";
+char empty_dest[100] = "", s21_empty_dest[100] = "";
+memcpy(empty_dest, empty_src, strlen(empty_src) + 1);
+s21_memcpy(s21_empty_dest, empty_src, strlen(empty_src) + 1);
+ck_assert_msg(memcmp(empty_dest, s21_empty_dest, strlen(empty_src) + 1) == 0, "\033[31mmemcpy_to_empty_dest failed\033[0m");
+
+# test memcpy_with_integers
+int int_src[] = {1, 2, 3, 4, 5};
+int int_dest[5], s21_int_dest[5];
+memcpy(int_dest, int_src, sizeof(int_src));
+s21_memcpy(s21_int_dest, int_src, sizeof(int_src));
+ck_assert_msg(memcmp(int_dest, s21_int_dest, sizeof(int_src)) == 0, "\033[31mmemcpy_with_integers failed\033[0m");
+
+# test memcpy_string_array
+char *str_array_src[] = {"hello", "world", "test", NULL};
+char *str_array_dest[4], *s21_str_array_dest[4];
+memcpy(str_array_dest, str_array_src, sizeof(str_array_src));
+s21_memcpy(s21_str_array_dest, str_array_src, sizeof(str_array_src));
+ck_assert_msg(memcmp(str_array_dest, s21_str_array_dest, sizeof(str_array_src)) == 0, "\033[31mmemcpy_string_array failed\033[0m");
+
+# test memcpy_reverse_order
+char rev_src[] = "reverse";
+char rev_dest[100], s21_rev_dest[100];
+memcpy(rev_dest, rev_src, strlen(rev_src) + 1);
+s21_memcpy(s21_rev_dest, rev_src, strlen(rev_src) + 1);
+ck_assert_msg(memcmp(rev_dest, s21_rev_dest, strlen(rev_src) + 1) == 0, "\033[31mmemcpy_reverse_order failed\033[0m");
+
+# test memcpy_identical_buffer
+char ident_src[] = "identical";
+char ident_dest[100];
+memcpy(ident_dest, ident_src, strlen(ident_src) + 1);
+s21_memcpy(ident_dest, ident_src, strlen(ident_src) + 1);
+ck_assert_msg(memcmp(ident_dest, ident_src, strlen(ident_src) + 1) == 0, "\033[31mmemcpy_identical_buffer failed\033[0m");
+
+# test memcpy_end_of_buffer
+char end_src[50];
+memset(end_src, 'X', 49);
+end_src[49] = '\0';
+char end_dest[50], s21_end_dest[50];
+memcpy(end_dest, end_src, 50);
+s21_memcpy(s21_end_dest, end_src, 50);
+ck_assert_msg(memcmp(end_dest, s21_end_dest, 50) == 0, "\033[31mmemcpy_end_of_buffer failed\033[0m");

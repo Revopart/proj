@@ -1,0 +1,32 @@
+# suite s21_strrchr_suite
+
+# tcase Basic_Functionality
+# test strrchr_basic
+char str[] = "example string";
+int ch = 'a';
+char *expected = strrchr(str, ch);
+char *result = s21_strrchr((const char *)str, ch);
+ck_assert_msg(result == expected, "\033[31mstrrchr_basic failed: result %p, expected %p\033[0m", result, expected);
+
+# test strrchr_no_occurrence
+char str[] = "test string";
+int ch = 'z';
+char *expected = strrchr(str, ch);
+char *result = s21_strrchr((const char *)str, ch);
+ck_assert_msg(result == expected, "\033[31mstrrchr_no_occurrence failed: result %p, expected %p\033[0m", result, expected);
+
+# tcase Edge_Cases_2
+# test strrchr_null_char
+char str[] = "test string";
+int ch = '\0';
+char *expected = strrchr(str, ch);
+char *result = s21_strrchr((const char *)str, ch);
+ck_assert_msg(result == expected, "\033[31mstrrchr_null_char failed: result %p, expected %p\033[0m", result, expected);
+
+# test strrchr_string_with_multiple_occurrences
+char str[] = "test string";
+int ch = 't';
+char *expected = strrchr(str, ch);
+char *result = s21_strrchr((const char *)str, ch);
+ck_assert_msg(result == expected, "\033[31mstrrchr_string_with_multiple_occurrences failed: result %p, expected %p\033[0m", result, expected);
+

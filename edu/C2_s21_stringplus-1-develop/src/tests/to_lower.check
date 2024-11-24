@@ -1,0 +1,29 @@
+
+# suite s21_to_lower_suite
+
+# tcase Basic_Functionality_to_lower
+# test to_lower_basic
+const char str[] = "Hello, World!";
+char expected[] = "hello, world!";
+void *result = s21_to_lower(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_lower_basic failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test to_lower_null_string
+const char *str = NULL;
+void *result = s21_to_lower(str);
+ck_assert_msg(result == NULL, "\033[31mto_lower_null_string failed: result %p, expected NULL\033[0m", result);
+
+# test to_lower_empty_string
+const char str[] = "";
+char expected[] = "";
+void *result = s21_to_lower(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_lower_empty_string failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);
+
+# test to_lower_mixed_case
+const char str[] = "HeLlO, WoRlD!";
+char expected[] = "hello, world!";
+void *result = s21_to_lower(str);
+ck_assert_msg(strcmp((char *)result, expected) == 0, "\033[31mto_lower_mixed_case failed: result '%s', expected '%s'\033[0m", (char *)result, expected);
+free(result);

@@ -1,0 +1,52 @@
+# suite s21_insert_suite
+
+# tcase Basic_Functionality_s21_insert
+
+# test s21_insert_insert_at_beginning
+char src_beginning[100] = "world!";
+char str_beginning[100] = "Hello, ";
+size_t start_index_beginning = 0;
+char expected_beginning[100] = "Hello, world!";
+char *result_beginning = (char *)s21_insert(src_beginning, str_beginning, start_index_beginning);
+ck_assert_str_eq(result_beginning, expected_beginning);
+free(result_beginning);
+
+/*# test s21_insert_insert_in_middle
+char src_middle[100] = "He world!";
+char str_middle[100] = "llo,";
+size_t start_index_middle = 2;
+char expected_middle[100] = "Hello, world!";
+char *result_middle = (char *)s21_insert(src_middle, str_middle, start_index_middle);
+ck_assert_str_eq(result_middle, expected_middle);
+free(result_middle);
+*/
+
+# test s21_insert_insert_at_end
+char src_end[100] = "Hello, ";
+char str_end[100] = "world!";
+size_t start_index_end = 7;
+char expected_end[100] = "Hello, world!";
+char *result_end = (char *)s21_insert(src_end, str_end, start_index_end);
+ck_assert_str_eq(result_end, expected_end);
+free(result_end);
+
+# test s21_insert_null_src
+char *src_null = NULL;
+char str_null_src[100] = "Hello";
+size_t start_index_null_src = 0;
+void *result_null_src = s21_insert(src_null, str_null_src, start_index_null_src);
+ck_assert_ptr_eq(result_null_src, NULL);
+
+# test s21_insert_null_str
+char src_null_str[100] = "Hello, world!";
+char *str_null = NULL;
+size_t start_index_null_str = 5;
+void *result_null_str = s21_insert(src_null_str, str_null, start_index_null_str);
+ck_assert_ptr_eq(result_null_str, NULL);
+
+# test s21_insert_start_index_out_of_bounds
+char src_oob[100] = "Hello, world!";
+char str_oob[100] = "Test";
+size_t start_index_oob = 20;
+void *result_oob = s21_insert(src_oob, str_oob, start_index_oob);
+ck_assert_ptr_eq(result_oob, NULL);

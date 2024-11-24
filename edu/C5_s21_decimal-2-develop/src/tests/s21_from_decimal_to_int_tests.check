@@ -1,0 +1,54 @@
+# suite s21_from_decimal_to_int_test_suite
+
+# tcase From_Decimal_To_Int_Basic_Functionality
+
+# test from_decimal_to_int_positive
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 123e-2 = 1.23 (scale = 2)
+int result;
+int expected = 1;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_int_positive failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_int_positive failed: result %d, expected %d\033[0m", result, expected);
+
+# test from_decimal_to_int_negative
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000000100000000000000000}};  // -123e-2 = -1.23 (scale = 2, sign = 1)
+int result;
+int expected = -1;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_int_negative failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_int_negative failed: result %d, expected %d\033[0m", result, expected);
+
+# test from_decimal_to_int_large_scale
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // 123e-28 (scale = 28)
+int result;
+int expected = 0;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_int_large_scale failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_int_large_scale failed: result %d, expected %d\033[0m", result, expected);
+
+# test from_decimal_to_int_zero
+s21_decimal value = {{0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000}};  // 0
+int result;
+int expected = 0;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_int_zero failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_int_zero failed: result %d, expected %d\033[0m", result, expected);
+
+# test from_decimal_to_int_null_pointer
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b00000000000000100000000000000000}};  // 123e-2 = 1.23 (scale = 2)
+int error_status = s21_from_decimal_to_int(value, NULL);
+ck_assert_msg(error_status == 1, "\033[31mfrom_decimal_to_int_null_pointer failed: error_status %d, expected 1\033[0m", error_status);
+
+# test from_decimal_to_int_non_zero_bits_1_2
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000001, 0b00000000000000000000000000000000, 0b00000000000111000000000000000000}};  // Неверное значение, bits[1] не ноль
+int result;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 1, "\033[31mfrom_decimal_to_int_non_zero_bits_1_2 failed: error_status %d, expected 1\033[0m", error_status);
+
+# test from_decimal_to_int_negative_large_scale
+s21_decimal value = {{0b00000000000000000000000001111011, 0b00000000000000000000000000000000, 0b00000000000000000000000000000000, 0b10000000000111000000000000000000}};  // -123e-28 (scale = 28, sign = 1)
+int result;
+int expected = 0;
+int error_status = s21_from_decimal_to_int(value, &result);
+ck_assert_msg(error_status == 0, "\033[31mfrom_decimal_to_int_negative_large_scale failed: error_status %d, expected 0\033[0m", error_status);
+ck_assert_msg(result == expected, "\033[31mfrom_decimal_to_int_negative_large_scale failed: result %d, expected %d\033[0m", result, expected);
